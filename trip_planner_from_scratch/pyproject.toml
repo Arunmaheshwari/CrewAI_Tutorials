@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "Trip-planner-yt"
+version = "0.1.0"
+description = "Simple ai trip planner"
+authors = ["Arun Maheshwari"]
+
+
+
+[tool.poetry.dependencies]
+python = ">3.10.0,<3.12"
+crewai = "0.1.24"
+unstructured = "==0.10.25"
+pyownet = "0.10.0"
+tools = "^0.1.9"
+python-dotenv = "1.0.0"
+
+
+
+# it is for checking our type error in python code
+[tool.pyright]
+# https://github.com/mircorsoft/pyright/blob/main/docs/configuration.md
+useLibraryCodeForTypes = true
+exclude = [".cache"]
+
+
+# it is for checking error and styling error
+[tool.ruff]
+# https://beta.ruff.rs/docs/configuration/
+select = ["E", "W", "F", "I", "B", "C4", "ARG", "SIM"]
+ignore = ['W291', 'W292', 'W293']
+
+
+# it is for checking the packege and dependencies
+[build-system]
+requiues = ["poetry-core>=1.0.0"]
+build-backend = 'poetry.core.masonry.api'
