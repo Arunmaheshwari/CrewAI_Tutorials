@@ -1,51 +1,38 @@
+import json
+import requests
+import os
 from langchain.tools import tool
 
-from pydantic import BaseModel, Field
+class SearchTools:
 
+    @tool("Search the internet")
+    def search_internet(query):
+        """Useful to search the internet
+        about a given topic and return relevant results"""
+        top_result_to_return = 4
+        url = "https://google.serper.dev/search"
+        payload = json.dumps({"q": query})
+        headers = {
+            'X-API-KEY': os.environ['SERPER_API_KEY'],
+            'content-type': 'application/json'
+        }
 
-# This tool is very basic and simple
-class CalculatorTools():
-    
-    @tool("Make a calculation")
-    def calculate(operation):
-        """ Useful to perform any mathematical  calculations,
-        like sum, minus, multiplication, division, etc.
-        The input to this tool should be a mathematical
-        expression, a couple examples are "200*7" or "5000/2*10"
-        """
+        response = requests.request("POST", url, headers = headers, data = payload)
 
-        try:
-            return eval(operation)
-        except SyntaxError:
-            return "Error: Invalid syntex in mathematical expression"
+        # check if there is an organic key
+        if 'organic' not in response.json():
+            return "Sorry, I could not find anything about that, there could be an error with you serper api"
+        else:
+            results = response.json()['organic']
+            string = []
+            for result in results[:top_result_to_return]:
+                try:
+                    string.append('\n'.join([
+                        f"Title: {result['title']}", f"Link: {result['link']}",
+                        f"Snippet: {result['snippet']}", "\n-------------"
+                    ]))
+                except KeyError:
+                    next
 
-
-
-
-
-# # Define a Pydantic model for the tool's input parameters
-
-# class CalculationInput(BaseModel):
-#     operation: str = Field(..., description= "The mathematical operation to perform")
-#     factor: float = Field(..., description= "A Factor by which to multiply the result of the operation")
-
-
-# # Use th tool decorator with the args_schema parameter pointing to the Pydantic Model
-# @tool("perform_calculation", args_schema=CalculationInput, return_direct=True)
-# def perform_calculation(operation: str, factor: float) -> str:
-#     """
-#     Perform a specified mathematical operation and multiplies the result by a given factor.
-
-#     Parameters:
-#     - operation (str): A string representing a mathematical operation (e.g., "10+5").
-#     - factor (float): A factor by which to multiply the result of the operation.
-
-#     Returns:
-#     - A string representation of the calculation result.
-#     """
-
-#     # perform the calculation
-#     result = eval(operation) * factor
-
-#     # Return the result as a string
-#     return f"The result of '{operation}' multiplied by {factor} is {result}."
+            return '\n'.join(string)
+        
