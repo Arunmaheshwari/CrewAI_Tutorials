@@ -10,9 +10,11 @@ authors = ["Arun Maheshwari"]
 python = ">3.10.0,<3.12"
 crewai = "0.1.24"
 unstructured = "==0.10.25"
+pyown = '3.3.0'
 pyownet = "0.10.0"
 tools = "^0.1.9"
 python-dotenv = "1.0.0"
+langchain-openai = "^0.0.5"
 
 
 

@@ -1,3 +1,6 @@
+from textwrap import dedent
+from crewai import Task
+
 """
 Creating Tasks Cheat sheet:
 - Begin with the end in mind. Identify the specific outcome your tasks are aiming to achieve.
@@ -40,7 +43,7 @@ Key steps for Task Creation:
 """
 
 
-class CustomTasks:
+class TravelTasks:
     def __tips_section(self):
         return "If you do your BEST WORK, I'll give you a $10,000 commission!"
     
@@ -102,7 +105,7 @@ class CustomTasks:
                     **Description**: Compile an in-depth guide for the selected city, gathering information about
                     key attractions, local customs, special events, and daily activity recommendations.
                     This guide should provide a thorough overview of what the city has to offer, including
-                    hidden gems, cultural hotspots, must-visit landmarks, weather forecasts, and high-level costs.
+                    hidden gems, cultural hotspots, must-visit landmarks, weather forecasts, and high-level costs. 
 
                     
                         **Parameters**:
